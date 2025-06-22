@@ -1,0 +1,50 @@
+local player = game.Players.LocalPlayer
+local playerGui = player:WaitForChild("PlayerGui")
+
+-- Crear una nueva ScreenGui
+local screenGui = Instance.new("ScreenGui")
+screenGui.Name = "ProgressBarGui"
+screenGui.Parent = playerGui
+
+-- Crear el fondo de la barra
+local background = Instance.new("Frame")
+background.Size = UDim2.new(0.4, 0, 0.05, 0)
+background.Position = UDim2.new(0.3, 0, 0.9, 0)
+background.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+background.BorderSizePixel = 0
+background.Parent = screenGui
+
+-- Crear la barra verde de progreso
+local progressBar = Instance.new("Frame")
+progressBar.Size = UDim2.new(0, 0, 1, 0)
+progressBar.BackgroundColor3 = Color3.fromRGB(0, 255, 0)
+progressBar.BorderSizePixel = 0
+progressBar.Parent = background
+
+-- Crear el texto de porcentaje
+local percentageText = Instance.new("TextLabel")
+percentageText.Size = UDim2.new(1, 0, 1, 0)
+percentageText.BackgroundTransparency = 1
+percentageText.TextColor3 = Color3.new(1, 1, 1)
+percentageText.Font = Enum.Font.SourceSansBold
+percentageText.TextScaled = true
+percentageText.Text = "0%"
+percentageText.Parent = background
+
+-- Tiempo total en segundos
+local totalTime = 16 * 60 -- 960 segundos
+local elapsedTime = 0
+local updateRate = 1 -- cada 1 segundo
+
+-- Bucle de actualización
+while elapsedTime <= totalTime do
+	local progress = elapsedTime / totalTime
+	progressBar.Size = UDim2.new(progress, 0, 1, 0)
+	percentageText.Text = string.format("%.0f%%", progress * 100)
+	wait(updateRate)
+	elapsedTime = elapsedTime + updateRate
+end
+
+-- Asegurar que quede en 100%
+progressBar.Size = UDim2.new(1, 0, 1, 0)
+percentageText.Text = "100%"
