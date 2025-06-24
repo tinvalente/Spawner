@@ -1,48 +1,59 @@
 local player = game.Players.LocalPlayer
 local playerGui = player:WaitForChild("PlayerGui")
 
--- Crear una nueva ScreenGui
+-- Crear la GUI principal
 local screenGui = Instance.new("ScreenGui")
 screenGui.Name = "ProgressBarGui"
+screenGui.ResetOnSpawn = false
 screenGui.Parent = playerGui
 
--- Crear el fondo de la barra
+-- Fondo de la barra (centrado y más grande)
 local background = Instance.new("Frame")
-background.Size = UDim2.new(0.4, 0, 0.05, 0)
-background.Position = UDim2.new(0.3, 0, 0.9, 0)
+background.Size = UDim2.new(0.6, 0, 0.075, 0)
+background.Position = UDim2.new(0.2, 0, 0.4625, 0)
 background.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
 background.BorderSizePixel = 0
 background.Parent = screenGui
 
--- Crear la barra verde de progreso
+-- Bordes redondeados
+local bgCorner = Instance.new("UICorner")
+bgCorner.CornerRadius = UDim.new(0, 12)
+bgCorner.Parent = background
+
+-- Barra verde de progreso
 local progressBar = Instance.new("Frame")
 progressBar.Size = UDim2.new(0, 0, 1, 0)
-progressBar.BackgroundColor3 = Color3.fromRGB(0, 255, 0)
+progressBar.BackgroundColor3 = Color3.fromRGB(0, 200, 0)
 progressBar.BorderSizePixel = 0
 progressBar.Parent = background
 
--- Crear el texto de porcentaje
+-- Bordes redondeados para la barra
+local progressCorner = Instance.new("UICorner")
+progressCorner.CornerRadius = UDim.new(0, 12)
+progressCorner.Parent = progressBar
+
+-- Texto del porcentaje
 local percentageText = Instance.new("TextLabel")
 percentageText.Size = UDim2.new(1, 0, 1, 0)
 percentageText.BackgroundTransparency = 1
 percentageText.TextColor3 = Color3.new(1, 1, 1)
-percentageText.Font = Enum.Font.SourceSansBold
+percentageText.Font = Enum.Font.GothamBold
 percentageText.TextScaled = true
 percentageText.Text = "0%"
 percentageText.Parent = background
 
--- Tiempo total en segundos
-local totalTime = 16 * 60 -- 960 segundos
+-- Tiempo total en segundos (16 minutos)
+local totalTime = 16 * 60
 local elapsedTime = 0
-local updateRate = 1 -- cada 1 segundo
+local updateRate = 1
 
--- Bucle de actualización
+-- Actualizar la barra cada segundo
 while elapsedTime <= totalTime do
 	local progress = elapsedTime / totalTime
 	progressBar.Size = UDim2.new(progress, 0, 1, 0)
 	percentageText.Text = string.format("%.0f%%", progress * 100)
 	wait(updateRate)
-	elapsedTime = elapsedTime + updateRate
+	elapsedTime += updateRate
 end
 
 -- Asegurar que quede en 100%
